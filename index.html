@@ -1,0 +1,1489 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>好好生日快乐</title>
+    <style>
+      :root {
+        --bg0: #0d0d12;
+        --bg1: #151525;
+        --text0: rgba(255, 255, 255, 0.92);
+        --text1: rgba(255, 255, 255, 0.68);
+        --card: rgba(255, 255, 255, 0.06);
+        --card2: rgba(255, 255, 255, 0.10);
+        --stroke: rgba(255, 255, 255, 0.14);
+        --shadow: 0 18px 60px rgba(0, 0, 0, 0.60);
+        --tileSize: 68px;
+        --radius: 16px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "PingFang SC",
+          "Microsoft YaHei", sans-serif;
+        color: var(--text0);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+      }
+      .bgImage {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -999;
+        background-image: url('蝴蝶.jpg');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.8; /* 调整透明度至80%，保留水墨纹理细节 */
+        pointer-events: none;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.92;
+        background-image: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.8px),
+          radial-gradient(circle, rgba(255, 255, 255, 0.78) 0 1px, transparent 2px),
+          radial-gradient(circle, rgba(255, 255, 255, 0.58) 0 0.9px, transparent 1.7px),
+          radial-gradient(circle, rgba(255, 255, 255, 0.40) 0 0.8px, transparent 1.6px),
+          radial-gradient(circle, rgba(255, 255, 255, 0.24) 0 0.7px, transparent 1.5px),
+          radial-gradient(circle, rgba(255, 255, 255, 0.16) 0 0.6px, transparent 1.4px);
+        background-size: 920px 720px, 1040px 820px, 1180px 900px, 1280px 980px, 1440px 1100px, 1680px 1280px;
+        background-position: 12% 18%, 42% 12%, 66% 20%, 86% 14%, 24% 46%, 72% 82%;
+        background-repeat: repeat;
+        filter: blur(0.15px);
+        animation: sparkleMove 26s linear infinite, sparkleTwinkle 6.8s ease-in-out infinite;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.34;
+        background-image: radial-gradient(closest-side, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0) 72%),
+          radial-gradient(closest-side, rgba(255, 190, 222, 0.34), rgba(255, 190, 222, 0) 72%),
+          radial-gradient(closest-side, rgba(200, 176, 255, 0.34), rgba(200, 176, 255, 0) 72%);
+        background-size: 540px 540px, 860px 860px, 980px 980px;
+        background-position: 14% 78%, 78% 72%, 46% 96%;
+        background-repeat: no-repeat;
+        filter: blur(0.22px);
+      }
+      main {
+        position: relative;
+        z-index: 1;
+      }
+      .bgHearts {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+      #cssHeartsContainer {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .cssHeart {
+        position: absolute;
+        bottom: -50px;
+        opacity: 0;
+        transform: scale(0.8);
+        user-select: none;
+        animation-name: floatHeartAnim;
+        animation-timing-function: ease-out; /* 整体用 ease-out 缓动 */
+        animation-fill-mode: forwards;
+      }
+      @keyframes floatHeartAnim {
+        0% {
+          opacity: 0;
+          transform: translate(0, 0) scale(0.8);
+        }
+        20% {
+          opacity: var(--maxOpacity, 0.75);
+          transform: translate(calc(var(--swing) * 0.2), -20vh) scale(1);
+        }
+        80% {
+          opacity: var(--maxOpacity, 0.75);
+          transform: translate(calc(var(--swing) * 0.8), -80vh) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(var(--swing), -110vh) scale(0.6);
+        }
+      }
+      @keyframes sparkleMove {
+        0% {
+          background-position: 12% 18%, 42% 12%, 66% 20%, 86% 14%, 24% 46%, 72% 82%;
+        }
+        100% {
+          background-position: calc(12% + 140px) calc(18% + 220px), calc(42% - 170px) calc(12% + 240px), calc(66% + 120px)
+              calc(20% + 260px),
+            calc(86% - 150px) calc(14% + 220px), calc(24% + 160px) calc(46% + 280px), calc(72% - 190px) calc(82% + 320px);
+        }
+      }
+      @keyframes sparkleTwinkle {
+        0% {
+          opacity: 0.85;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.86;
+        }
+      }
+      @keyframes petalsFall {
+        0% {
+          background-position: 0 -280px;
+          opacity: 0.48;
+        }
+        60% {
+          opacity: 0.62;
+        }
+        100% {
+          background-position: 120px 940px;
+          opacity: 0.50;
+        }
+      }
+      .introOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        background: rgba(255, 248, 251, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 1.8s ease, visibility 1.8s ease;
+      }
+      .introOverlay.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .introText {
+        font-family: "YouYuan", "KaiTi", "STKaiti", "PingFang SC", serif;
+        font-size: 26px;
+        color: #4a90e2; /* 浪漫的蓝色 */
+        letter-spacing: 0.15em;
+        text-align: center;
+        border-right: 2px solid #4a90e2; /* 光标颜色同步为蓝色 */
+        white-space: nowrap;
+        overflow: hidden;
+        padding-right: 4px;
+        animation: blinkCursor 0.8s step-end infinite;
+        font-weight: 600;
+        text-shadow: 0 2px 12px rgba(74, 144, 226, 0.3); /* 蓝色光晕 */
+        opacity: 1;
+        transition: opacity 0.8s ease; /* 用于文字间的淡入淡出 */
+      }
+      .introText.fade-out {
+        opacity: 0;
+      }
+      .introText.done {
+        border-right-color: transparent;
+        animation: none;
+      }
+      @keyframes blinkCursor {
+        0%, 100% { border-right-color: transparent; }
+        50% { border-right-color: #4a90e2; }
+      }
+      main {
+        flex: 1;
+        display: grid;
+        place-items: center;
+        padding: 22px 14px 30px;
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity 2.5s ease, transform 2.5s ease;
+      }
+      main.visible {
+        opacity: 1;
+        transform: scale(1);
+      }
+      header {
+        width: min(92vw, 900px);
+        display: grid;
+        gap: 6px;
+        justify-items: center;
+        text-align: center;
+        margin-bottom: 18px;
+        padding: 12px 14px;
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.22));
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        box-shadow: 0 22px 70px rgba(25, 12, 40, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(10px);
+      }
+      h1 {
+        font-size: 34px;
+        font-weight: 520;
+        letter-spacing: 0.02em;
+        margin: 0;
+        line-height: 1.05;
+        font-family: "STXingkai", "FZShuTi", "KaiTi", "STKaiti", "YouYuan", "Segoe Script", "Segoe Print", ui-serif, serif;
+        background: linear-gradient(180deg, #ff4fa2, #8b5cff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 2px 0 rgba(255, 255, 255, 0.55), 0 12px 30px rgba(80, 35, 120, 0.25);
+      }
+      .subtitle {
+        margin: 0;
+        font-size: 14px;
+        color: rgba(70, 35, 95, 0.78);
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+      }
+      .heartStage {
+        position: relative;
+        width: min(92vw, 720px);
+        aspect-ratio: 1 / 1;
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.07));
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 26px 80px rgba(25, 12, 40, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.40), inset 0 -1px 0 rgba(0, 0, 0, 0.10);
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+      }
+      .glow {
+        position: absolute;
+        inset: -30%;
+        background: radial-gradient(circle at 50% 40%, rgba(255, 130, 190, 0.18), transparent 55%),
+          radial-gradient(circle at 30% 70%, rgba(120, 190, 255, 0.12), transparent 55%),
+          radial-gradient(circle at 75% 75%, rgba(180, 140, 255, 0.10), transparent 55%);
+        filter: blur(6px);
+        opacity: 0.9;
+        pointer-events: none;
+        animation: drift 18s ease-in-out infinite;
+      }
+      .heartStage::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(520px 360px at var(--hlx, 50%) var(--hly, 25%), rgba(255, 255, 255, 0.35), transparent 65%),
+          radial-gradient(720px 520px at 50% 110%, rgba(0, 0, 0, 0.18), transparent 70%);
+        opacity: 0.9;
+      }
+      @keyframes drift {
+        0% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        50% {
+          transform: translate3d(2%, -1.5%, 0) scale(1.03);
+        }
+        100% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+      }
+      .tile {
+        position: absolute;
+        width: var(--tileSize);
+        height: var(--tileSize);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: var(--radius);
+        padding: 0;
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: 0 14px 34px rgba(18, 10, 28, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+        overflow: hidden;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+        animation: pulse var(--pulseDur) ease-in-out var(--pulseDelay) infinite, floaty var(--floatDur) ease-in-out var(--floatDelay)
+          infinite;
+        will-change: transform, opacity;
+      }
+      .tile:focus-visible {
+        box-shadow: 0 0 0 3px rgba(255, 190, 225, 0.35), 0 12px 26px rgba(0, 0, 0, 0.35);
+      }
+      .tile:hover {
+        filter: brightness(1.06);
+      }
+      .tile--outline {
+        border-color: rgba(255, 255, 255, 0.34);
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.18),
+          0 0 24px rgba(255, 140, 200, 0.16);
+      }
+      .tile:not(.tile--outline) {
+        filter: brightness(0.97);
+      }
+      .tile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transform: scale(1.02);
+      }
+      @keyframes pulse {
+        0% {
+          opacity: 0.78;
+          transform: translate(-50%, -50%) scale(0.985);
+        }
+        55% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1.02);
+        }
+        100% {
+          opacity: 0.80;
+          transform: translate(-50%, -50%) scale(0.99);
+        }
+      }
+      @keyframes floaty {
+        0% {
+          translate: 0 0;
+        }
+        50% {
+          translate: 0 -4px;
+        }
+        100% {
+          translate: 0 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body::before,
+        body::after,
+        .glow,
+        .tile {
+          animation: none !important;
+        }
+      }
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        place-items: center;
+        background: rgba(0, 0, 0, 0.70);
+        padding: 18px;
+        z-index: 99999;
+      }
+      .modal[data-open="true"] {
+        display: grid;
+      }
+      .modalCard {
+        width: min(96vw, 1180px);
+        height: min(90vh, 900px);
+        border-radius: 22px;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        overflow: hidden;
+      }
+      .modalImageWrap {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        overflow: hidden;
+        border-radius: 22px;
+      }
+      .modalImageWrap::before {
+        content: "";
+        position: absolute;
+        inset: -8%;
+        background-image: var(--modalBg, none);
+        background-size: cover;
+        background-position: center;
+        filter: blur(22px);
+        transform: scale(1.08);
+        opacity: 0.70;
+      }
+      .modalImageWrap::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(900px 520px at 50% 30%, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0) 60%),
+          linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.10) 36%, rgba(0, 0, 0, 0.22));
+        opacity: 0.85;
+      }
+      .modalTopBar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        padding: 12px 14px;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(180deg, rgba(10, 14, 26, 0.62), rgba(10, 14, 26, 0));
+        backdrop-filter: blur(10px);
+      }
+      .modalImage {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        background: transparent;
+      }
+      .modalTitle {
+        margin: 0;
+        font-size: 20px;
+        color: rgba(35, 165, 255, 1);
+        font-family: "YouYuan", "KaiTi", "STKaiti", "PingFang SC", "Microsoft YaHei", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 700;
+        -webkit-text-stroke: 0.6px rgba(255, 255, 255, 0.72);
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.22), 0 2px 10px rgba(0, 90, 170, 0.14);
+        letter-spacing: 0.02em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: center;
+        justify-self: center;
+        grid-column: 2;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.26);
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+      }
+      .modalTopBar .closeBtn {
+        justify-self: end;
+        grid-column: 3;
+        border-color: rgba(255, 255, 255, 0.26);
+        background: rgba(0, 0, 0, 0.26);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+      }
+      .closeBtn {
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.86);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 13px;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        transition: background 120ms ease, box-shadow 120ms ease;
+      }
+      .closeBtn:hover {
+        background: rgba(255, 255, 255, 0.10);
+      }
+      .closeBtn:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 190, 225, 0.35);
+      }
+      .navBtn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 3;
+        width: 44px;
+        height: 44px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(0, 0, 0, 0.2);
+        color: rgba(255, 255, 255, 0.7);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+        transition: all 0.2s ease;
+      }
+      .navBtn:hover {
+        background: rgba(0, 0, 0, 0.4);
+        color: rgba(255, 255, 255, 1);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+      .prevBtn {
+        left: 12px;
+      }
+      .nextBtn {
+        right: 12px;
+      }
+      .audioCtrl {
+        position: relative;
+        z-index: 3;
+        display: grid;
+        gap: 10px;
+        justify-items: end;
+        pointer-events: none;
+        margin: 0 16px 16px auto;
+        opacity: 0;
+        transition: opacity 2.5s ease;
+      }
+      .audioCtrl.visible {
+        opacity: 1;
+      }
+      .audioBtn {
+        pointer-events: auto;
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.20);
+        background: rgba(255, 255, 255, 0.10);
+        color: rgba(40, 20, 55, 0.92);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        box-shadow: 0 18px 50px rgba(25, 12, 40, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(10px);
+        user-select: none;
+      }
+      .audioBtn:hover {
+        background: rgba(255, 255, 255, 0.16);
+      }
+      .audioBtn:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 190, 225, 0.35), 0 18px 50px rgba(25, 12, 40, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      }
+      .audioPanel {
+        pointer-events: auto;
+        display: grid;
+        gap: 8px;
+        align-items: center;
+        padding: 10px 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 18px 50px rgba(25, 12, 40, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.50);
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+      .audioCtrl[data-open="true"] .audioPanel {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .audioRange {
+        width: 180px;
+        accent-color: rgba(255, 100, 170, 0.95);
+      }
+      @media (max-width: 420px) {
+        h1 {
+          font-size: 20px;
+        }
+        .subtitle {
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bgImage" aria-hidden="true"></div>
+    <div class="introOverlay" id="introOverlay">
+      <p class="introText" id="introText"></p>
+    </div>
+    <canvas class="bgHearts" id="bgHearts" aria-hidden="true"></canvas>
+    <div id="cssHeartsContainer"></div>
+    <audio id="bgm" preload="auto" loop src="李玉刚_刚好遇见你.mp3"></audio>
+    <main>
+      <header>
+        <h1>好好，生日快乐</h1>
+        <p class="subtitle">点击任意图片可放大</p>
+      </header>
+      <section class="heartStage" aria-label="爱心照片墙">
+        <div class="glow"></div>
+      </section>
+    </main>
+    <div class="audioCtrl" data-open="false">
+      <button class="audioBtn" type="button" aria-label="音量" aria-expanded="false">音量 45%</button>
+      <div class="audioPanel" aria-hidden="true">
+        <input class="audioRange" type="range" min="0" max="100" value="45" step="1" aria-label="音量" />
+      </div>
+    </div>
+
+    <div class="modal" data-open="false" aria-hidden="true">
+      <div class="modalCard" role="dialog" aria-modal="true" aria-label="照片预览">
+        <div class="modalImageWrap">
+          <div class="modalTopBar">
+            <p class="modalTitle"></p>
+            <button class="closeBtn" type="button">关闭</button>
+          </div>
+          <button class="navBtn prevBtn" aria-label="上一张" type="button">&#10094;</button>
+          <img class="modalImage" alt="" />
+          <button class="navBtn nextBtn" aria-label="下一张" type="button">&#10095;</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const photoFiles = [
+        { file: "group_photo.jpg", title: "“合影”" },
+        { file: "dance_for_you.jpg", title: "一舞寄相思" },
+        { file: "listening_together.jpg", title: "一起听" },
+        { file: "shake_the_sun_together.jpg", title: "一起摇太阳" },
+        { file: "before_stage.jpg", title: "上台前" },
+        { file: "may.jpg", title: "五月" },
+        { file: "letter.jpg", title: "信" },
+        { file: "winter.jpg", title: "冬" },
+        { file: "kawaii_smile.jpg", title: "卡哇伊的笑" },
+        { file: "carmen.jpg", title: "卡门！" },
+        { file: "it_takes_two.jpg", title: "双人成行" },
+        { file: "april_canola_flower_sea.jpg", title: "四月的油菜花海" },
+        { file: "looking_back.jpg", title: "回眸" },
+        { file: "summer.jpg", title: "夏" },
+        { file: "night_sea.jpg", title: "夜色之海" },
+        { file: "peaceful_afternoon.jpg", title: "宁静的午后" },
+        { file: "love_token.jpg", title: "定情礼物" },
+        { file: "seeking_wild.jpg", title: "寻野" },
+        { file: "little_train.jpg", title: "小火车" },
+        { file: "old_city_story.jpg", title: "旧城故事" },
+        { file: "bright_flame.jpg", title: "明媚烈焰！" },
+        { file: "spring.jpg", title: "春" },
+        { file: "sunny_day.jpg", title: "晴天" },
+        { file: "speed_of_falling_cherry_blossoms.jpg", title: "樱花下落的速度" },
+        { file: "graduation_frame.jpg", title: "毕业同框" },
+        { file: "life_is_like_a_dream.jpg", title: "浮生若梦" },
+        { file: "over_the_sea.jpg", title: "海的那边" },
+        { file: "cool_stream.jpg", title: "清凉的溪" },
+        { file: "garden_tour.jpg", title: "游园" },
+        { file: "cat_cafe.jpg", title: "猫咖" },
+        { file: "boating_on_xuanwu_lake.jpg", title: "玄武湖泛舟" },
+        { file: "rose.jpg", title: "玫瑰" },
+        { file: "why_looking_at_me.jpg", title: "看我干嘛" },
+        { file: "under_the_blue_sky.jpg", title: "碧空之下" },
+        { file: "praying_for_destiny_99.jpg", title: "祈缘99" },
+        { file: "autumn.jpg", title: "秋" },
+        { file: "through_the_forest.jpg", title: "穿越森林" },
+        { file: "hairpin_flower.jpg", title: "簪花" },
+        { file: "sweet_soup.jpg", title: "糖水" },
+        { file: "red_leaves_most_affectionate.jpg", title: "红叶最多情" },
+        { file: "anniversary.jpg", title: "纪念日" },
+        { file: "in_the_greenery.jpg", title: "绿意之中" },
+        { file: "delicious_crab_roe_noodles.jpg", title: "美味蟹黄面" },
+        { file: "grassland.jpg", title: "草地" },
+        { file: "under_the_sunset.jpg", title: "落日下" },
+        { file: "blue_love.jpg", title: "蓝色爱恋" },
+        { file: "cicada_chirping_summer.jpg", title: "蝉鸣的夏" },
+        { file: "the_wind_rises.jpg", title: "起风了" },
+        { file: "snow.jpg", title: "雪" }
+      ];
+
+      const heartStage = document.querySelector(".heartStage");
+      const modal = document.querySelector(".modal");
+      const modalCard = document.querySelector(".modalCard");
+      const modalImage = document.querySelector(".modalImage");
+      const modalTitle = document.querySelector(".modalTitle");
+      const closeBtn = document.querySelector(".closeBtn");
+      const prevBtn = document.querySelector(".prevBtn");
+      const nextBtn = document.querySelector(".nextBtn");
+      const modalImageWrap = document.querySelector(".modalImageWrap");
+      const bgHeartsCanvas = document.querySelector("#bgHearts");
+      const bgm = document.querySelector("#bgm");
+      const audioCtrl = document.querySelector(".audioCtrl");
+      const audioBtn = document.querySelector(".audioBtn");
+      const audioPanel = document.querySelector(".audioPanel");
+      const audioRange = document.querySelector(".audioRange");
+
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function startBackgroundHearts() {
+        if (!bgHeartsCanvas) return;
+        if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+        const ctx = bgHeartsCanvas.getContext("2d");
+        if (!ctx) return;
+
+        let width = 0;
+        let height = 0;
+        let dpr = 1;
+
+        const hearts = [];
+        const maxHearts = 46;
+
+        function resize() {
+          dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+          width = Math.max(1, window.innerWidth);
+          height = Math.max(1, window.innerHeight);
+          bgHeartsCanvas.width = Math.floor(width * dpr);
+          bgHeartsCanvas.height = Math.floor(height * dpr);
+          bgHeartsCanvas.style.width = `${width}px`;
+          bgHeartsCanvas.style.height = `${height}px`;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function drawHeart(x, y, size, rotation, alpha, isBright) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(rotation);
+          ctx.scale(size, size);
+          ctx.globalAlpha = alpha;
+          // 更粉嫩浪漫的颜色
+          ctx.fillStyle = isBright ? "rgba(255, 220, 240, 0.95)" : "rgba(255, 140, 195, 0.72)";
+          ctx.shadowColor = isBright ? "rgba(255, 200, 230, 0.65)" : "rgba(255, 120, 180, 0.45)";
+          ctx.shadowBlur = isBright ? 12 : 16;
+
+          ctx.beginPath();
+          ctx.moveTo(0, -0.25);
+          ctx.bezierCurveTo(0.52, -0.86, 1.42, -0.10, 0, 0.92);
+          ctx.bezierCurveTo(-1.42, -0.10, -0.52, -0.86, 0, -0.25);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+        }
+
+        function spawnHeart() {
+          const depth = 0.25 + Math.random() * 0.95;
+          const size = (6 + depth * 16) / 20;
+          const x = Math.random() * width;
+          // 从底部产生，给它足够的上升空间
+          const y = height + 40 + Math.random() * 120;
+          // 增加速度，让它切实向上漂浮
+          const speed = 30 + depth * 60;
+          const drift = (Math.random() * 2 - 1) * (10 + depth * 20);
+          const rotation = (Math.random() * 2 - 1) * 0.45;
+          const rotSpeed = (Math.random() * 2 - 1) * 0.15;
+          // 调整生命周期，确保能在视野内上升一段距离再消失
+          const ttl = 6 + Math.random() * 6;
+          const isBright = Math.random() < 0.34;
+
+          hearts.push({
+            x,
+            y,
+            depth,
+            size,
+            speed,
+            drift,
+            rotation,
+            rotSpeed,
+            ttl,
+            t: 0,
+            isBright
+          });
+        }
+
+        resize();
+        for (let i = 0; i < maxHearts * 0.8; i += 1) {
+            spawnHeart();
+            // 初始化时让爱心分布在全屏各处
+            hearts[hearts.length - 1].y = Math.random() * height;
+            hearts[hearts.length - 1].t = Math.random() * hearts[hearts.length - 1].ttl;
+        }
+
+        let last = performance.now();
+        function tick(now) {
+          const dt = Math.min(0.033, (now - last) / 1000);
+          last = now;
+
+          ctx.clearRect(0, 0, width, height);
+
+          while (hearts.length < maxHearts) spawnHeart();
+
+          for (let i = hearts.length - 1; i >= 0; i -= 1) {
+            const h = hearts[i];
+            h.t += dt;
+            const p = clamp(h.t / h.ttl, 0, 1);
+            // 淡入淡出：前期快速淡入，后期缓慢淡出
+            const fade = p < 0.2 ? p / 0.2 : 1 - (p - 0.2) / 0.8;
+            // 提高整体透明度，让爱心更明显
+            const alpha = (0.35 + h.depth * 0.4) * fade;
+            const lift = h.speed * (0.65 + h.depth * 0.55);
+            h.y -= lift * dt;
+            h.x += h.drift * dt;
+            h.rotation += h.rotSpeed * dt;
+
+            const wobble = Math.sin((now / 1000) * (0.8 + h.depth * 0.8) + h.x * 0.01) * (0.06 + h.depth * 0.05);
+            drawHeart(h.x, h.y, h.size * (1 + wobble), h.rotation, alpha, h.isBright);
+
+            if (p >= 1 || h.y < -80 || h.x < -120 || h.x > width + 120) {
+              hearts.splice(i, 1);
+            }
+          }
+
+          requestAnimationFrame(tick);
+        }
+
+        window.addEventListener("resize", resize, { passive: true });
+        requestAnimationFrame(tick);
+      }
+
+      function initCssHearts() {
+        const container = document.getElementById('cssHeartsContainer');
+        if (!container) return;
+
+        let activeHearts = 0;
+        const MAX_HEARTS = 20;
+
+        // 生成水平分布位置，中间稀疏
+        function getLeftPos() {
+          const rand = Math.random();
+          // 分三区：左 0-33%, 中 33-66%, 右 66-100%
+          // 中间区域概率降低 40% (原本各占约 0.33，现在中间占约 0.2，左右各占约 0.4)
+          if (rand < 0.4) {
+            return Math.random() * 33; // 左边区域
+          } else if (rand < 0.6) {
+            return 33 + Math.random() * 34; // 中间区域，降低概率
+          } else {
+            return 67 + Math.random() * 33; // 右边区域
+          }
+        }
+
+        function createHeart() {
+          if (activeHearts >= MAX_HEARTS) return;
+
+          const heart = document.createElement('div');
+          heart.innerHTML = '❤';
+          heart.className = 'cssHeart';
+
+          // 配色：浅粉 #FFC2D1 和 深粉 #FF8FA3
+          const isLight = Math.random() > 0.5;
+          heart.style.color = isLight ? '#FFC2D1' : '#FF8FA3';
+
+          // 透明度：0.65 ~ 0.8
+          const opacity = 0.65 + Math.random() * 0.15;
+          heart.style.setProperty('--maxOpacity', opacity.toFixed(2));
+
+          // 大小分两档：大 / 小 (介于 24 ~ 42 之间)
+          const isLarge = Math.random() > 0.5;
+          const size = isLarge ? (36 + Math.random() * 6) : (24 + Math.random() * 6);
+          heart.style.fontSize = `${size}px`;
+
+          // 初始位置：非均匀分布，避免中心扎堆
+          const left = getLeftPos();
+          heart.style.left = `${left}%`;
+
+          // 动画时长：6 ~ 10秒 (配合 ease-out，下面慢上面快)
+          const duration = 6 + Math.random() * 4;
+          heart.style.animationDuration = `${duration}s`;
+
+          // 左右摆动幅度：-15px 到 15px
+          const swing = (Math.random() * 30 - 15).toFixed(1);
+          heart.style.setProperty('--swing', `${swing}px`);
+
+          container.appendChild(heart);
+          activeHearts++;
+
+          // 动画结束后移除
+          setTimeout(() => {
+            if (heart.parentNode) {
+              heart.parentNode.removeChild(heart);
+              activeHearts--;
+            }
+          }, duration * 1000);
+        }
+
+        // 生成频率：0.4s ~ 0.9s
+        function scheduleNext() {
+          const delay = 400 + Math.random() * 500;
+          setTimeout(() => {
+            createHeart();
+            scheduleNext();
+          }, delay);
+        }
+
+        // 立即生成几个错开的初始爱心
+        for (let i = 0; i < 5; i++) {
+          setTimeout(createHeart, Math.random() * 1500);
+        }
+        
+        scheduleNext();
+      }
+
+      function fileBaseName(filename) {
+        const dotIndex = filename.lastIndexOf(".");
+        const raw = dotIndex >= 0 ? filename.slice(0, dotIndex) : filename;
+        return raw.replace(/^["“”‘’]+|["“”‘’]+$/g, "").trim();
+      }
+
+      function photoUrl(filename) {
+        return `./photos/${filename}`;
+      }
+
+      function isInsideHeart(x, y) {
+        const a = x * x + y * y - 1;
+        return a * a * a - x * x * y * y * y <= 0;
+      }
+
+      function heartCurve(t) {
+        const s = Math.sin(t);
+        const c = Math.cos(t);
+        const x = 16 * s * s * s;
+        const y = 13 * c - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+        return { x, y };
+      }
+
+      function generateCandidates(count) {
+        const candidates = [];
+        const tries = Math.max(1600, count * 80);
+        let attempts = 0;
+        while (candidates.length < tries && attempts < tries * 40) {
+          attempts += 1;
+          const x = (Math.random() * 2 - 1) * 1.25;
+          const y = (Math.random() * 2 - 1) * 1.25;
+          if (!isInsideHeart(x, y)) continue;
+          candidates.push({ x, y });
+        }
+        return candidates;
+      }
+
+      function pickEvenPoints(points, count, seedPoint) {
+        if (count <= 0) return [];
+        if (points.length === 0) return seedPoint ? [seedPoint].slice(0, count) : [];
+
+        const picked = [];
+        if (seedPoint) picked.push({ x: seedPoint.x, y: seedPoint.y });
+        else picked.push({ ...points[Math.floor(points.length / 2)] });
+
+        const minDistSqToPicked = new Array(points.length).fill(Infinity);
+        for (let i = 0; i < points.length; i++) {
+          let best = Infinity;
+          for (let k = 0; k < picked.length; k++) {
+            const dx = points[i].x - picked[k].x;
+            const dy = points[i].y - picked[k].y;
+            best = Math.min(best, dx * dx + dy * dy);
+          }
+          minDistSqToPicked[i] = best;
+        }
+
+        while (picked.length < count) {
+          let bestIndex = 0;
+          let bestScore = -1;
+          for (let i = 0; i < points.length; i++) {
+            if (minDistSqToPicked[i] > bestScore) {
+              bestScore = minDistSqToPicked[i];
+              bestIndex = i;
+            }
+          }
+          const next = points[bestIndex];
+          picked.push({ ...next });
+
+          for (let i = 0; i < points.length; i++) {
+            const dx = points[i].x - next.x;
+            const dy = points[i].y - next.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < minDistSqToPicked[i]) minDistSqToPicked[i] = d2;
+          }
+        }
+        return picked;
+      }
+
+      function buildHeartPoints(count) {
+        const outlineCount = Math.min(count, Math.max(16, Math.round(count * 0.46)));
+        const fillCount = count - outlineCount;
+
+        const denseCount = 900;
+        const dense = [];
+        for (let i = 0; i <= denseCount; i++) {
+          const t = (i / denseCount) * Math.PI * 2;
+          dense.push(heartCurve(t));
+        }
+
+        let maxAbsX = 0;
+        let maxAbsY = 0;
+        dense.forEach((p) => {
+          maxAbsX = Math.max(maxAbsX, Math.abs(p.x));
+          maxAbsY = Math.max(maxAbsY, Math.abs(p.y));
+        });
+
+        const norm = dense.map((p) => ({ x: p.x / (maxAbsX || 1), y: p.y / (maxAbsY || 1) }));
+        const lengths = [0];
+        for (let i = 1; i < norm.length; i++) {
+          const dx = norm[i].x - norm[i - 1].x;
+          const dy = norm[i].y - norm[i - 1].y;
+          lengths[i] = lengths[i - 1] + Math.sqrt(dx * dx + dy * dy);
+        }
+
+        const totalLen = lengths[lengths.length - 1] || 1;
+        const stepLen = totalLen / outlineCount;
+        const outline = [];
+        let seg = 1;
+        for (let k = 0; k < outlineCount; k++) {
+          const target = k * stepLen;
+          while (seg < lengths.length && lengths[seg] < target) seg += 1;
+          const prev = Math.max(1, seg - 1);
+          const l0 = lengths[prev - 1];
+          const l1 = lengths[prev];
+          const t = l1 === l0 ? 0 : (target - l0) / (l1 - l0);
+          const a = norm[prev - 1];
+          const b = norm[prev];
+          outline.push({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, isOutline: true });
+        }
+
+        const fill = [];
+        if (fillCount > 0) {
+          const candidates = generateCandidates(Math.max(2400, fillCount * 220));
+          const normalized = candidates.map((p) => ({ x: p.x / 1.25, y: p.y / 1.25 }));
+
+          const filtered = normalized.filter((p) => {
+            let best = Infinity;
+            for (let i = 0; i < outline.length; i++) {
+              const dx = p.x - outline[i].x;
+              const dy = p.y - outline[i].y;
+              best = Math.min(best, dx * dx + dy * dy);
+              if (best < 0.04) return false;
+            }
+            return true;
+          });
+
+          const seed = { x: 0, y: 0 };
+          const picked = pickEvenPoints(filtered, fillCount, seed);
+          picked.forEach((p) => fill.push({ x: p.x, y: p.y, isOutline: false }));
+        }
+
+        const combined = [...outline, ...fill];
+        combined.sort((a, b) => a.y - b.y);
+        return combined;
+      }
+
+      const heartPoints = buildHeartPoints(photoFiles.length);
+
+      function computeTileSize(containerSize, count) {
+        const base = containerSize / 9.2;
+        const adjust = Math.max(0.9, Math.min(1.12, 52 / Math.sqrt(count)));
+        const size = base * adjust;
+        return Math.max(56, Math.min(78, size));
+      }
+
+      function layout() {
+        const rect = heartStage.getBoundingClientRect();
+        const minSide = Math.min(rect.width, rect.height);
+        const tileSize = computeTileSize(minSide, photoFiles.length);
+        heartStage.style.setProperty("--tileSize", `${tileSize}px`);
+        heartStage.style.setProperty("--radius", `${Math.max(14, Math.min(18, tileSize * 0.25))}px`);
+
+        let minX = Infinity;
+        let maxX = -Infinity;
+        let minY = Infinity;
+        let maxY = -Infinity;
+        heartPoints.forEach((p) => {
+          minX = Math.min(minX, p.x);
+          maxX = Math.max(maxX, p.x);
+          minY = Math.min(minY, p.y);
+          maxY = Math.max(maxY, p.y);
+        });
+
+        const pad = Math.max(10, tileSize * 0.32);
+        const usableW = Math.max(1, rect.width - pad * 2);
+        const usableH = Math.max(1, rect.height - pad * 2);
+        const rangeX = Math.max(1e-6, maxX - minX);
+        const rangeY = Math.max(1e-6, maxY - minY);
+        const scale = Math.min(usableW / rangeX, usableH / rangeY);
+
+        const tiles = heartStage.querySelectorAll(".tile");
+        const positions = [];
+        tiles.forEach((tile, index) => {
+          const p = heartPoints[index];
+          const x = pad + (p.x - minX) * scale;
+          const y = pad + (maxY - p.y) * scale;
+          positions.push({
+            x,
+            y,
+            targetX: x,
+            targetY: y,
+            isOutline: Boolean(p?.isOutline)
+          });
+        });
+
+        const minDist = tileSize * 0.86;
+        const step = tileSize * 0.12;
+        const maxXPos = rect.width - pad;
+        const maxYPos = rect.height - pad;
+
+        for (let iter = 0; iter < 38; iter += 1) {
+          for (let i = 0; i < positions.length; i += 1) {
+            const pi = positions[i];
+            let pushX = 0;
+            let pushY = 0;
+
+            for (let j = 0; j < positions.length; j += 1) {
+              if (i === j) continue;
+              const pj = positions[j];
+              const dx = pi.x - pj.x;
+              const dy = pi.y - pj.y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 === 0) continue;
+              if (d2 >= minDist * minDist) continue;
+              const d = Math.sqrt(d2);
+              const force = (minDist - d) / minDist;
+              pushX += (dx / d) * force;
+              pushY += (dy / d) * force;
+            }
+
+            const attract = pi.isOutline ? 0.24 : 0.10;
+            pushX += (pi.targetX - pi.x) * attract / tileSize;
+            pushY += (pi.targetY - pi.y) * attract / tileSize;
+
+            const moveFactor = pi.isOutline ? 0.24 : 1;
+            pi.x = clamp(pi.x + pushX * step * moveFactor, pad, maxXPos);
+            pi.y = clamp(pi.y + pushY * step * moveFactor, pad, maxYPos);
+
+            const maxDrift = (pi.isOutline ? 0.14 : 0.48) * tileSize;
+            const tx = pi.x - pi.targetX;
+            const ty = pi.y - pi.targetY;
+            const t2 = tx * tx + ty * ty;
+            if (t2 > maxDrift * maxDrift) {
+              const t = Math.sqrt(t2);
+              pi.x = pi.targetX + (tx / t) * maxDrift;
+              pi.y = pi.targetY + (ty / t) * maxDrift;
+            }
+          }
+        }
+
+        tiles.forEach((tile, index) => {
+          const p = heartPoints[index];
+          const pos = positions[index];
+          tile.style.left = `${pos.x}px`;
+          tile.style.top = `${pos.y}px`;
+          const outlineBoost = p?.isOutline ? 5000 : 0;
+          tile.style.zIndex = String(1000 + outlineBoost + Math.round((p.y + 2) * 200));
+        });
+      }
+
+      let currentPhotoIndex = -1;
+
+      function openModal(index) {
+        if (index < 0 || index >= photoFiles.length) return;
+        currentPhotoIndex = index;
+        const photoObj = photoFiles[index];
+        const filename = photoObj.file;
+        const title = photoObj.title;
+        const url = photoUrl(filename);
+        modalImage.src = url;
+        modalImage.alt = title;
+        modalTitle.textContent = title;
+        modalImageWrap?.style.setProperty("--modalBg", `url("${url}")`);
+        modal.dataset.open = "true";
+        modal.setAttribute("aria-hidden", "false");
+        requestAnimationFrame(fitModalCard);
+        // modal 打开后焦点不要固定在关闭按钮，给外层容器，或者不强行focus
+      }
+
+      function showNext() {
+        if (currentPhotoIndex < 0) return;
+        const nextIndex = (currentPhotoIndex + 1) % photoFiles.length;
+        openModal(nextIndex);
+      }
+
+      function showPrev() {
+        if (currentPhotoIndex < 0) return;
+        const prevIndex = (currentPhotoIndex - 1 + photoFiles.length) % photoFiles.length;
+        openModal(prevIndex);
+      }
+
+      function closeModal() {
+        currentPhotoIndex = -1;
+        modal.dataset.open = "false";
+        modal.setAttribute("aria-hidden", "true");
+        modalImage.src = "";
+        modalImage.alt = "";
+        modalTitle.textContent = "";
+        modalImageWrap?.style.removeProperty("--modalBg");
+        modalCard?.style.removeProperty("width");
+        modalCard?.style.removeProperty("height");
+        if (modalCard) delete modalCard.dataset.orient;
+      }
+
+      function randomIn(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function fitModalCard() {
+        if (!modalCard || !modalImage) return;
+        if (modal.dataset.open !== "true") return;
+
+        const pad = 36;
+        const maxW = Math.min(Math.max(240, window.innerWidth - pad), 1180);
+        const maxH = Math.min(Math.max(240, window.innerHeight - pad), 900);
+
+        const nw = modalImage.naturalWidth || 1;
+        const nh = modalImage.naturalHeight || 1;
+        const ar = nw / nh;
+
+        let w = maxW;
+        let h = w / ar;
+        if (h > maxH) {
+          h = maxH;
+          w = h * ar;
+        }
+
+        modalCard.style.width = `${Math.round(w)}px`;
+        modalCard.style.height = `${Math.round(h)}px`;
+
+        modalCard.dataset.orient = ar > 1.08 ? "landscape" : ar < 0.92 ? "portrait" : "square";
+      }
+
+      function initBgm() {
+        if (!bgm || !audioBtn || !audioRange || !audioCtrl || !audioPanel) return;
+
+        let isPlaying = false;
+        let isMutedAutoplay = false;
+
+        function setOpen(isOpen) {
+          audioCtrl.dataset.open = isOpen ? "true" : "false";
+          audioBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+          audioPanel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+        }
+
+        function setButtonLabel() {
+          const vol = Math.round((bgm.muted ? 0 : bgm.volume) * 100);
+          if (!isPlaying) {
+            audioBtn.textContent = `点击播放 ${vol}%`;
+            return;
+          }
+          if (bgm.muted || bgm.volume <= 0.001) {
+            audioBtn.textContent = `静音 ${vol}%`;
+            return;
+          }
+          audioBtn.textContent = `音量 ${vol}%`;
+        }
+
+        function setVolumeFromRange() {
+          const v = clamp(Number(audioRange.value) / 100, 0, 1);
+          bgm.volume = v;
+          bgm.muted = v <= 0.001 ? true : false;
+          isMutedAutoplay = false;
+          setButtonLabel();
+        }
+
+        async function tryPlay(allowUnmute) {
+          if (!bgm) return false;
+          if (allowUnmute) bgm.muted = false;
+          try {
+            await bgm.play();
+            isPlaying = true;
+            setButtonLabel();
+            return true;
+          } catch {
+            return false;
+          }
+        }
+
+        bgm.volume = 0.45;
+        bgm.muted = false;
+        audioRange.value = "45";
+        setOpen(false);
+        setButtonLabel();
+
+        (async () => {
+          const ok = await tryPlay(false);
+          if (ok) return;
+
+          bgm.muted = true;
+          isMutedAutoplay = true;
+          const okMuted = await tryPlay(false);
+          if (okMuted) {
+            setButtonLabel();
+            return;
+          }
+
+          setButtonLabel();
+        })();
+
+        document.addEventListener(
+          "pointerdown",
+          () => {
+            if (isPlaying && !isMutedAutoplay) return;
+            isMutedAutoplay = false;
+            bgm.muted = false;
+            tryPlay(true);
+          },
+          { passive: true, once: true }
+        );
+
+        audioRange.addEventListener("input", () => {
+          setVolumeFromRange();
+          if (!isPlaying) tryPlay(true);
+        });
+
+        audioBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const isOpen = audioCtrl.dataset.open === "true";
+          setOpen(!isOpen);
+          if (!isPlaying) {
+            isMutedAutoplay = false;
+            bgm.muted = false;
+            tryPlay(true);
+          } else if (bgm.muted || bgm.volume <= 0.001) {
+            bgm.muted = false;
+            if (bgm.volume <= 0.001) {
+              bgm.volume = 0.25;
+              audioRange.value = "25";
+            }
+          } else {
+            bgm.muted = true;
+          }
+          setButtonLabel();
+        });
+
+        document.addEventListener("pointerdown", () => setOpen(false), { passive: true });
+        audioPanel.addEventListener("pointerdown", (e) => e.stopPropagation(), { passive: true });
+
+        bgm.addEventListener("pause", () => {
+          isPlaying = false;
+          setButtonLabel();
+        });
+        bgm.addEventListener("play", () => {
+          isPlaying = true;
+          setButtonLabel();
+        });
+        bgm.addEventListener("volumechange", setButtonLabel);
+      }
+
+      function mountTiles() {
+        const frag = document.createDocumentFragment();
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2 + 20;
+
+        photoFiles.forEach((photoObj, index) => {
+          const filename = photoObj.file;
+          const title = photoObj.title;
+          const btn = document.createElement("button");
+          btn.type = "button";
+          const isOutline = Boolean(heartPoints[index]?.isOutline);
+          btn.className = isOutline ? "tile tile--outline" : "tile";
+          btn.style.setProperty("--pulseDur", `${randomIn(3.8, 5.8).toFixed(2)}s`);
+          btn.style.setProperty("--pulseDelay", `${randomIn(-3.5, 0).toFixed(2)}s`);
+          btn.style.setProperty("--floatDur", `${randomIn(5.2, 8.8).toFixed(2)}s`);
+          btn.style.setProperty("--floatDelay", `${randomIn(-4.5, 0).toFixed(2)}s`);
+          btn.setAttribute("aria-label", `打开：${title}`);
+
+          btn.style.left = `${cx}px`;
+          btn.style.top = `${cy}px`;
+
+          const img = document.createElement("img");
+          img.loading = "lazy";
+          img.decoding = "async";
+          img.src = photoUrl(filename);
+          img.alt = title;
+
+          btn.appendChild(img);
+          btn.addEventListener("click", () => openModal(index));
+          frag.appendChild(btn);
+        });
+        heartStage.appendChild(frag);
+      }
+
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2 + 20;
+      buildHeartPoints(cx, cy);
+      mountTiles();
+
+      startBackgroundHearts();
+      initCssHearts();
+      initBgm();
+      modalImage.addEventListener("load", fitModalCard);
+
+      // --- 开场动画 ---
+      const introOverlay = document.getElementById("introOverlay");
+      const introTextEl = document.getElementById("introText");
+      const mainEl = document.querySelector("main");
+      const audioCtrlEl = document.querySelector(".audioCtrl");
+      
+      const introLines = [
+        "因为我刚好遇见你",
+        "留下足迹才美丽"
+      ];
+      
+      let lineIdx = 0;
+      let charIdx = 0;
+
+      function typeLine() {
+        if (lineIdx >= introLines.length) {
+          // 所有行都打完了
+          introTextEl.classList.add("done");
+          introOverlay.classList.add("hidden");
+          mainEl.classList.add("visible");
+          if (audioCtrlEl) audioCtrlEl.classList.add("visible");
+          
+          // 强制重绘，确保照片墙是从中心散开的过渡动画
+          void mainEl.offsetWidth;
+          layout();
+
+          // 尝试自动播放音乐
+          if (bgm && bgm.paused) {
+            bgm.play().catch(() => {}); // 忽略浏览器自动播放限制的报错
+          }
+          return;
+        }
+
+        const currentText = introLines[lineIdx];
+        if (charIdx < currentText.length) {
+          introTextEl.textContent += currentText.charAt(charIdx);
+          charIdx++;
+          setTimeout(typeLine, 280); // 打字速度调慢（原本150ms -> 现在280ms）
+        } else {
+          // 单行打完，立刻淡出
+          introTextEl.classList.add("fade-out");
+          
+          setTimeout(() => {
+            // 淡出后清空内容，准备打下一行
+            introTextEl.textContent = "";
+            introTextEl.classList.remove("fade-out");
+            lineIdx++;
+            charIdx = 0;
+            // 稍微等一下再开始打下一行
+            setTimeout(typeLine, 500);
+          }, 800); // fade-out CSS 过渡时间是 0.8s
+        }
+      }
+
+      // 延迟一点点开始打字
+      setTimeout(typeLine, 800);
+
+      let resizeRaf = 0;
+      window.addEventListener("resize", () => {
+        cancelAnimationFrame(resizeRaf);
+        resizeRaf = requestAnimationFrame(() => {
+          if (mainEl.classList.contains("visible")) {
+            layout();
+            fitModalCard();
+          }
+        });
+      });
+
+      closeBtn.addEventListener("click", closeModal);
+      prevBtn.addEventListener("click", showPrev);
+      nextBtn.addEventListener("click", showNext);
+
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal || e.target === modalCard || e.target === modalImageWrap) closeModal();
+      });
+
+      window.addEventListener("keydown", (e) => {
+        if (modal.dataset.open !== "true") return;
+        if (e.key === "Escape") closeModal();
+        if (e.key === "ArrowLeft") showPrev();
+        if (e.key === "ArrowRight") showNext();
+      });
+
+      // 移动端滑动切图
+      let touchStartX = 0;
+      let touchEndX = 0;
+      modalCard.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      modalCard.addEventListener("touchend", (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, { passive: true });
+
+      function handleSwipe() {
+        const swipeDist = touchEndX - touchStartX;
+        if (swipeDist > 50) {
+          showPrev(); // 向右滑，上一张
+        } else if (swipeDist < -50) {
+          showNext(); // 向左滑，下一张
+        }
+      }
+    </script>
+  </body>
+</html>
